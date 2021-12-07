@@ -20,14 +20,15 @@ export function calculatePosition(commands: Command[]): Position {
     depth: 0,
   };
 
+
   for (const command of commands) {
     switch (command.type) {
       case "forward": position.distance += command.value;
-                      break;
+        break;
       case "down": position.depth += command.value;
-                   break;
+        break;
       case "up": position.depth -= command.value;
-                 break;
+        break;
     }
   }
 
@@ -42,10 +43,10 @@ export function calculateAimedPosition(commands: Command[]): AimedPosition {
   const actions: Record<CommandType, Action> = {
     up: (position, value) => ({ ...position, aim: position.aim - value }),
     down: (position, value) => ({ ...position, aim: position.aim + value }),
-    forward: (position, value) =>  ({ 
+    forward: (position, value) => ({
       distance: position.distance + value,
-      depth: position.aim === 0 ? position.aim : position.depth + (value * position.aim), 
-      aim: position.aim 
+      depth: position.aim === 0 ? position.aim : position.depth + (value * position.aim),
+      aim: position.aim
     })
   }
 
@@ -57,3 +58,4 @@ export function calculateAimedPosition(commands: Command[]): AimedPosition {
 
   return commands.reduce((currentPosition, command) => actions[command.type](currentPosition, command.value), initialPosition);
 }
+
