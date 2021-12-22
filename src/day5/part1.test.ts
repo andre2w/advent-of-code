@@ -47,6 +47,19 @@ test("Expand Line in the horizontal to show all the positions", expect => {
     { x: 5, y: 9 },
   ]);
 });
+test("Expand Line in the horizontal to show all the positions 2", expect => {
+  expect.deepEqual(expandLine(toLine(9,4,3,4)), [
+    { x: 3, y: 4 },
+    { x: 4, y: 4 },
+    { x: 5, y: 4 },
+    { x: 6, y: 4 },
+    { x: 7, y: 4 },
+    { x: 8, y: 4 },
+    { x: 9, y: 4 }
+  ]);
+});
+
+
 
 test("Expand Line in the vertical to show all the positions", expect => {
   expect.deepEqual(expandLine(toLine(7,0,7,4)), [

@@ -1,11 +1,24 @@
 export function countOverlap(input: string): number {
-  throw new Error();
+  const positions = parseInput(input)
+    .filter(line => line.start.x === line.end.x || line.start.y === line.end.y)
+    .flatMap(line => expandLine(line));
+
+  const positionCounter = new Map<string, number>();
+
+  for (const position of positions) {
+    const pos = `${position.x}-${position.y}`;
+    positionCounter.set(pos, (positionCounter.get(pos) ?? 0) + 1);
+  }
+
+  let result = 0;
+  for (const value of positionCounter.values()) {
+    if (value > 1) result++;
+  }
+
+  return result;
 }
 
-export interface Position {
-  x: number;
-  y: number;
-}
+type Position = Record<"x" | "y", number>;
 
 export interface Line {
   start: Position;
@@ -20,28 +33,26 @@ export function parseInput(input: string): Line[] {
 }
 
 export function expandLine(line: Line): Position[] {
+  let moving: keyof Position;
+  let anchored: keyof Position;
+
   if (line.start.y === line.end.y) {
-    const start = Math.min(line.start.x);
-    const end = Math.max(line.end.x);
-
-    const result: Position[] = [];
-
-    for (let i = start; i <= end; i++) {
-      result.push({ x: i, y: line.start.y });
-    }
-
-    return result;
-
+    moving = "x";
+    anchored = "y";
   } else {
-    const start = Math.min(line.start.y);
-    const end = Math.max(line.end.y);
-
-    const result: Position[] = [];
-
-    for (let i = start; i <= end; i++) {
-      result.push({ x: line.start.x, y: i });
-    }
-
-    return result;
+    moving = "y";
+    anchored = "x";
   }
+
+  const start = Math.min(line.start[moving], line.end[moving]);
+  const end = Math.max(line.start[moving], line.end[moving]);
+
+  const result: Position[] = [];
+
+  for (let i = start; i <= end; i++) {
+    result.push({ [moving]: i, [anchored]: line.start[anchored] } as Position);
+  }
+
+  return result;
 }
+
