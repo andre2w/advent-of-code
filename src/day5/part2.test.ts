@@ -1,5 +1,5 @@
 import test from "ava";
-import { countOverlap } from "./part1";
+import { countOverlap } from "./part2";
 
 const input = `0,9 -> 5,9
 8,0 -> 0,8
@@ -13,6 +13,7 @@ const input = `0,9 -> 5,9
 5,5 -> 8,2
 `;
 
-test("Should count the number of overlapping lines", expect => {
-  expect.is(countOverlap(input), 5);
+test("Parse input into Lines", expect => {
+  expect.deepEqual(countOverlap(input), 12);
 });
+

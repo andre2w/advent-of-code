@@ -1,8 +1,7 @@
-import { parseInput, expandLine } from "./utils";
+import { parseInput, expandLine  } from "./utils";
 
 export function countOverlap(input: string): number {
   const positions = parseInput(input)
-    .filter(line => line.start.x === line.end.x || line.start.y === line.end.y)
     .flatMap(line => expandLine(line));
 
   const positionCounter = new Map<string, number>();
